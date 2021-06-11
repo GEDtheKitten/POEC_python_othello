@@ -2,7 +2,7 @@ from tkinter import *
 
 # TODO :
 # ici importer la classe Tab  de Gerard ( pour utiliser tab(i,j) )
-# importer d'autres classes ? classe algo ?
+# importer d'autres classes ? Classe algo ?
 
 
 class Othello:
@@ -57,8 +57,10 @@ class Othello:
         yc = int(y/50)*50 + 25
 
         # TODO : vérifier la validité du positionnement d'un jeton (xc, yc)
-        # si invalide RETURN
-        # sinon :
+        # def verifierSiSaisieValide (xc,yc, plateau)
+        if verifierSiSaisieValide (xc, yc, plateau) == False :
+            return
+
         if radioValue.get() == 1:
             color = 'black'
             radioValue.set(2)   # on alterne les couleurs à chaque clic...
@@ -69,19 +71,22 @@ class Othello:
         self.dessiner_jeton(xc, yc, color)
         # TODO :
         # Tab.update(xc, yc)
-        # algo de recherche des lignes à retourner, puis mise à jour de tab(i,j)
-        # si lignes retournées ==> self.dessiner_jeu(tab)
+        # algo de recherche des lignes à retourner
+        # Tab.rechercherPion (xc, yc, plateau, xo)
+
+        # mise à jour de tab(i,j)
+        # def recupererScore (xo, plateau)
+        # mise à jour graphique ==> self.dessiner_jeu(tab)
         
     def sauver(self):
         print("On sauve la partie")
         # TODO
-        # coder une boite de dialogue pour enregistrer
-        #(vérifier si le fichier existe déjà, si oui l'écraser ? oui / non...)
+        # copier le tableau : def sauvegarderPlateau (plateau)
+        # 1 fichier, 1 partie (GG)
     
     def charger(self):
         print("On charge la partie")
         # TODO
-        # coder une boite de dialogue pour ouvrir un fichier
         # mettre à jour le tableau tab(i,j)
         #self.dessiner_jeu(tab)   # version definitive
         self.dessiner_jeu()  # version actuelle
@@ -135,6 +140,7 @@ btn_charger.pack(side = LEFT, padx = 5, pady = 5)
 
 btn_quit = Button(fen, text = 'Quitter', command = fen.destroy)
 btn_quit.pack(side = LEFT, padx = 5, pady = 5)
+# si oth.quitter : oth.sauver + fen.destroy
 
 # Boucle infinie pour ecouter les evenements
 fen.mainloop()

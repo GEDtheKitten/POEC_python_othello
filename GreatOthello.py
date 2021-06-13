@@ -4,6 +4,27 @@ from tkinter import *
 # ici importer la classe Tab  de Gerard ( pour utiliser tab(i,j) )
 # importer d'autres classes ? classe algo ?
 
+class plateau :
+
+    # classe plateau de jeu  
+    # 0 => case vide 
+    # 1 => pion noir
+    # 2 => pion blanc 
+
+    # constructeur du plateau
+    def __init__(self, taille=8):
+        self.plateau = [[0 for i in range(taille)] for i in range(taille)]
+    
+    # affiche les valeurs du plateau sans la syntax des listes [ , , ]
+    def afficher_plateau(self):
+        for ligne in range(len(self.plateau)):
+            print('  '.join(map(str, self.plateau[ligne]))) 
+
+    # renvoi le nombre de lignes du plateau 
+    def nombre_ligne(self):
+        return(len(self.plateau))
+
+
 
 class Othello:
     def __init__(self, fen):

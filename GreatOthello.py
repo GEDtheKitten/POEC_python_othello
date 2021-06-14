@@ -20,9 +20,72 @@ class plateau :
         for ligne in range(len(self.plateau)):
             print('  '.join(map(str, self.plateau[ligne]))) 
 
-    # renvoi le nombre de lignes du plateau 
+    # renvoi le nombre de lignes du plateau
     def nombre_ligne(self):
         return(len(self.plateau))
+
+    #setter
+    def set_value(self, i,j, value):
+        self.plateau[i][j] = value
+
+
+    # paramètre 'color' --> 0 : pas de pion, 1 : noir, 2 : blanc
+
+    def retourner_pions (self, xInitial, yInitial, xc, yc, color):
+        for i in range(xInitial, xc):
+            for j in range(yInitial, yc):
+                self.plateau[i, j] = color
+                i -= 1
+                j -= 1
+
+    # recherche le pion de couleur + retourner les pions entre le pion posé et le pion de même couleur le plus proche
+    def rechercher_pion(self, xc, yc, color):
+        tabSens = [[0,1], [1,1], [1,0], [1,-1], [0,-1], [-1,-1], [-1,0], [-1,1]]
+
+        xInitial = xc
+        yInitial = yc
+
+        # recherche le pion de couleur 'color' le plus proche dans chaque direction
+        for i, j in tabSens:
+            xc += i
+            yc += j
+            if self.plateau[xc, yc] == color:
+                # on a repéré le pion [xc,yc] le plus proche dans cette direction
+                # on transforme les points entre le point [xInitial, yInitial] et le point repéré [xc, yc]
+                self.retourner_pions (self, xInitial, yInitial, xc, yc, color)
+                break
+            # vérifie la présence d'une case vide
+            elif self.plateau[xc, yc] == 0:
+                continue # On passe à la direction suivante
+            else:
+                continue # On passe à la direction suivante
+
+
+
+    # vérifie la présence d'un autre pion à côté du pion placé
+    def verifier_si_saisie_valide (self, xc,yc):
+        # return True or False
+        # x et y compris entre 0 et 7 inclus (nb : contrainte via interface)
+
+        tabSens = [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1]]
+
+        for i, j in tabSens:
+            if self.plateau[xc+i, yc+j] !=0 :
+                # vérifie la présence d au moins un pion autour des coordonnées saisies
+                return True
+            else:
+                continue
+        return False
+
+    # compter le score d'une couleur
+    def recuperer_score (self, color):
+        score = 0
+        # compte les pions de couleur 'color'
+        for i in self.nombre_ligne():
+            for j in len(self.plateau[i]):
+                if self.plateau[i][j] == color:
+                    score += 1
+        return score
 
 
 
@@ -63,7 +126,7 @@ class Othello:
         self.cnv.delete(ALL)
         self.init_jeu()
     
-    def clic(self,event):
+    def clic(self, plateau, event):
         # c'est ici que l'on ajoute des jetons en cliquant,
         # que tab(i,j) se met à jour et que les algos de validité et de retournement
         # se mettent en action...
@@ -78,8 +141,8 @@ class Othello:
         yc = int(y/50)*50 + 25
 
         # TODO : vérifier la validité du positionnement d'un jeton (xc, yc)
-        # def verifierSiSaisieValide (xc,yc, plateau)
-        if verifierSiSaisieValide (xc, yc, plateau) == False :
+        if plateau.verifier_si_saisie_valide(plateau, xc, yc) == False :
+            # variable Plateau ? A PRECISER ------------------------------------------------------------
             return
 
         if radioValue.get() == 1:

@@ -67,8 +67,12 @@ class Othello_IHM:
         btn_quit.pack(side=LEFT, padx=5, pady=5)
 
     def convertirPixtoIndex(self, x):
-        print("conversion : ",(x-25)//50)
-        return ((x-25)//50)
+        index = (x-25)//50
+        return index
+    
+    def convertirIndextoPix(self, i):
+        pixel = (i*50) + 25
+        return pixel
 
     def dessiner_grille(self):
         gr = [0, 50, 100, 150, 200, 250, 300, 350, 400]
@@ -82,14 +86,20 @@ class Othello_IHM:
         self.cnv.create_oval(x - r, y - r, x + r, y + r, outline='black', fill=color)
 
     def dessiner_jeu(self):
-        print("tab = ", self.othello.tab)
-        gr = [0, 50, 100, 150, 200, 250, 300, 350, 400]
         self.cnv.delete(ALL)
         self.dessiner_grille()
-        self.dessiner_jeton(175, 175, 'white')  # les coordonnées seront remplacées
-        self.dessiner_jeton(225, 225, 'white')  # par la lecture de tab(i,j)
-        self.dessiner_jeton(175, 225, 'black')
-        self.dessiner_jeton(225, 175, 'black')
+        self.othello.tab.afficher_plateau()
+        
+        for i in range(8):
+            for j in range(8):
+                yc = self.convertirIndextoPix(i)
+                xc = self.convertirIndextoPix(j)
+                val = self.othello.tab.get_value(i, j)
+                if val == 1:
+                    self.dessiner_jeton(xc, yc, 'black')
+                else:
+                    if val == 2:
+                       self.dessiner_jeton(xc, yc, 'white')
 
     def reset_jeu(self):
         self.cnv.delete(ALL)
@@ -113,8 +123,8 @@ class Othello_IHM:
         xc = int(x / 50) * 50 + 25
         yc = int(y / 50) * 50 + 25
 
-        ic = self.convertirPixtoIndex(xc)
-        jc = self.convertirPixtoIndex(yc)
+        ic = self.convertirPixtoIndex(yc)
+        jc = self.convertirPixtoIndex(xc)
 
         if self.radio_value.get() == 1:
             color = 'black'
@@ -128,11 +138,10 @@ class Othello_IHM:
         if self.othello.tab.verifier_si_saisie_valide(ic, jc):
             # inscrit valeur du pion sur le plateau
             self.othello.tab.set_value(ic, jc, valColor)
-            print('on veut dessiner le jeton !!!!')
             self.dessiner_jeton(xc, yc, color)
             self.cmpt += 1
             self.score_noir.set(" : " + str(self.cmpt))
             self.score_blnc.set(" : " + str(self.cmpt))
 
             self.othello.tab.rechercher_pion(ic, jc, valColor)
-            # self.dessiner_jeu()
+            self.dessiner_jeu()

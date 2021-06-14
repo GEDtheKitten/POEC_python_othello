@@ -40,7 +40,7 @@ class plateau :
 
     # recherche le pion de couleur + retourner les pions entre le pion posé et le pion de même couleur le plus proche
     def rechercher_pion(self, xc, yc, color):
-        tabSens = [[0,1], [1,1], [1,0], [1,-1], [0,-1], [-1,-1], [-1,0], [-1,1]]
+        tabSens = [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1]]
 
         xInitial = xc
         yInitial = yc
@@ -49,32 +49,44 @@ class plateau :
         for i, j in tabSens:
             xc += i
             yc += j
-            if self.plateau[xc, yc] == color:
-                # on a repéré le pion [xc,yc] le plus proche dans cette direction
-                # on transforme les points entre le point [xInitial, yInitial] et le point repéré [xc, yc]
-                self.retourner_pions (self, xInitial, yInitial, xc, yc, color)
-                break
-            # vérifie la présence d'une case vide
-            elif self.plateau[xc, yc] == 0:
-                continue # On passe à la direction suivante
-            else:
-                continue # On passe à la direction suivante
-
+            print("i = ", i, " j = ", j, " x = ", xc, " y = ", yc)
+            while 0 <= xc <= 7 and 0 <= yc <= 7:
+                if self.plateau[xc][yc] == color:
+                    # on a repéré le pion [xc,yc] le plus proche dans cette direction
+                    # on transforme les points entre le point [xInitial, yInitial] et le point repéré [xc, yc]
+                    self.retourner_pions(xInitial, yInitial, xc, yc, color)
+                    xc += i
+                    yc += j
+                # vérifie la présence d'une case vide
+                elif self.plateau[xc][yc] == 0:
+                    break
+                else:
+                    break
+        print(self.plateau[xInitial][yInitial])
+        print(xInitial)
+        print(yInitial)
+        print(self.plateau[4][4])
 
 
     # vérifie la présence d'un autre pion à côté du pion placé
     def verifier_si_saisie_valide (self, xc,yc):
         # return True or False
         # x et y compris entre 0 et 7 inclus (nb : contrainte via interface)
+        # ne doit pas écraser un pion déjà saisi
 
         tabSens = [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1]]
+        print("abcisse initiale : ", xc)
+        print("ordonnée initiale : ", yc)
 
         for i, j in tabSens:
-            if self.plateau[xc+i, yc+j] !=0 :
-                # vérifie la présence d au moins un pion autour des coordonnées saisies
-                return True
-            else:
-                continue
+            # print("abcisse initiale : ", xc)
+            print(xc+i)
+            # print("ordonnée initiale : ", yc)
+            print(yc+j)
+            if 0 <= (xc+i) <= 7 and 0 <= (yc+j) <= 7:
+                if self.plateau[xc+i][yc+j] != 0 and self.plateau[xc][yc] == 0:
+                    # vérifie la présence d au moins un pion autour des coordonnées saisies
+                    return True
         return False
 
     # compter le score d'une couleur

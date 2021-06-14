@@ -2,7 +2,8 @@ from tkinter import *
 
 class Othello_IHM:
     def __init__(self, oth):
-        self.cmpt = 2
+        self.cmpt_noir = 2
+        self.cmpt_blnc = 2
         self.othello = oth
 
         # Creation de la fenetre
@@ -88,7 +89,9 @@ class Othello_IHM:
     def dessiner_jeu(self):
         self.cnv.delete(ALL)
         self.dessiner_grille()
+        print("####################################")
         self.othello.tab.afficher_plateau()
+        print("####################################")
         
         for i in range(8):
             for j in range(8):
@@ -105,9 +108,8 @@ class Othello_IHM:
         self.cnv.delete(ALL)
         self.dessiner_grille()
         self.dessiner_jeu()
-        self.cmpt = 2
-        self.score_noir.set(" : " + str(self.cmpt))
-        self.score_blnc.set(" : " + str(self.cmpt))
+        self.score_noir.set(" : " + str(2))
+        self.score_blnc.set(" : " + str(2))
 
     def clic(self, event):
         # c'est ici que l'on ajoute des jetons en cliquant,
@@ -139,9 +141,18 @@ class Othello_IHM:
             # inscrit valeur du pion sur le plateau
             self.othello.tab.set_value(ic, jc, valColor)
             self.dessiner_jeton(xc, yc, color)
-            self.cmpt += 1
-            self.score_noir.set(" : " + str(self.cmpt))
-            self.score_blnc.set(" : " + str(self.cmpt))
-
+             
+            # recherche des pions a retourner et retournement
             self.othello.tab.rechercher_pion(ic, jc, valColor)
+
+            # Recupere les compteurs de noirs et de blancs
+            self.cmpt_noir = self.othello.tab.recuperer_score(1)
+            self.cmpt_blnc = self.othello.tab.recuperer_score(2)
+             
+            # Met a jour les label (affichage graphique des compteurs)
+            self.score_noir.set(" : " + str(self.cmpt_noir))
+            self.score_blnc.set(" : " + str(self.cmpt_blnc))
+
+            # Mise a jour graphique du jeu apres retournement des pions
             self.dessiner_jeu()
+            

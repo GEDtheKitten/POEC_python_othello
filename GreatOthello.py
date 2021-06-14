@@ -87,8 +87,10 @@ class Plateau:
     def recuperer_score (self, color):
         score = 0
         # compte les pions de couleur 'color'
-        for i in self.nombre_ligne():
-            for j in len(self.plateau[i]):
+        #for i in self.nombre_ligne():
+        for i in range(self.nombre_ligne()):
+            #for j in len(self.plateau[i]):
+            for j in range(len(self.plateau[i])):
                 if self.plateau[i][j] == color:
                     score += 1
         return score

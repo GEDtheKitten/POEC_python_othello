@@ -51,7 +51,7 @@ class Plateau:
             xc += i
             yc += j
             print("i = ", i, " j = ", j, " x = ", xc, " y = ", yc)
-            while (xc>=0 and xc<=7) and (yc>=0 and yc<=7):
+            while 0 <= xc <= 7 and 0 <= yc <= 7:
                 if self.plateau[xc][yc] == color:
                     # on a repéré le pion [xc,yc] le plus proche dans cette direction
                     # on transforme les points entre le point [xInitial, yInitial] et le point repéré [xc, yc]
@@ -83,8 +83,8 @@ class Plateau:
             print(xc+i)
             # print("ordonnée initiale : ", yc)
             print(yc+j)
-            if ((xc+i)>=0 and (xc+i)<=7) and ((yc+j)>=0 and (yc+j)<=7):
-                if self.plateau[xc+i][yc+j] != 0:
+            if 0 <= (xc + i) <= 7 and 0 <= (yc + j) <= 7:
+                if self.plateau[xc + i][yc + j] != 0 and self.plateau[xc][yc] == 0:
                     # vérifie la présence d au moins un pion autour des coordonnées saisies
                     return True
         return False

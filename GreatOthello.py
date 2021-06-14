@@ -50,7 +50,6 @@ class Plateau:
         for i, j in tabSens:
             xc += i
             yc += j
-            print("i = ", i, " j = ", j, " x = ", xc, " y = ", yc)
             while 0 <= xc <= 7 and 0 <= yc <= 7:
                 if self.plateau[xc][yc] == color:
                     # on a repéré le pion [xc,yc] le plus proche dans cette direction
@@ -63,11 +62,12 @@ class Plateau:
                     break
                 else:
                     break
+        '''
         print(self.plateau[xInitial][yInitial])
         print(xInitial)
         print(yInitial)
         print(self.plateau[4][4])
-
+        '''
 
     # vérifie la présence d'un autre pion à côté du pion placé
     def verifier_si_saisie_valide (self, xc,yc):
@@ -75,14 +75,8 @@ class Plateau:
         # x et y compris entre 0 et 7 inclus (nb : contrainte via interface)
 
         tabSens = [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1]]
-        print("abcisse initiale : ", xc)
-        print("ordonnée initiale : ", yc)
-
+        
         for i, j in tabSens:
-            # print("abcisse initiale : ", xc)
-            print(xc+i)
-            # print("ordonnée initiale : ", yc)
-            print(yc+j)
             if 0 <= (xc + i) <= 7 and 0 <= (yc + j) <= 7:
                 if self.plateau[xc + i][yc + j] != 0 and self.plateau[xc][yc] == 0:
                     # vérifie la présence d au moins un pion autour des coordonnées saisies

@@ -1,5 +1,6 @@
 from tkinter import *
 
+
 class Othello_IHM:
     def __init__(self, oth):
         self.cmpt_noir = 2
@@ -43,10 +44,10 @@ class Othello_IHM:
         lab_blnc = Label(frr, textvariable=self.score_blnc)
 
         # Création du controle RadioButton avec deux possibilités
-        rdio_noir = Radiobutton(frl, text='NOIR', \
+        rdio_noir = Radiobutton(frl, text='NOIR',
                                 variable=self.radio_value, value=1)
 
-        rdio_blnc = Radiobutton(frr, text='BLANC', \
+        rdio_blnc = Radiobutton(frr, text='BLANC',
                                 variable=self.radio_value, value=2)
 
         # Agencement NOIR
@@ -68,12 +69,10 @@ class Othello_IHM:
         btn_quit.pack(side=LEFT, padx=5, pady=5)
 
     def convertirPixtoIndex(self, x):
-        index = (x-25)//50
-        return index
-    
+        return (x-25)//50
+
     def convertirIndextoPix(self, i):
-        pixel = (i*50) + 25
-        return pixel
+        return (i*50) + 25
 
     def dessiner_grille(self):
         gr = [0, 50, 100, 150, 200, 250, 300, 350, 400]
@@ -84,7 +83,8 @@ class Othello_IHM:
 
     def dessiner_jeton(self, x, y, color):
         r = 20
-        self.cnv.create_oval(x - r, y - r, x + r, y + r, outline='black', fill=color)
+        self.cnv.create_oval(x - r, y - r, x + r, y + r,
+                             outline='black', fill=color)
 
     def dessiner_jeu(self):
         self.cnv.delete(ALL)
@@ -92,7 +92,7 @@ class Othello_IHM:
         print("####################################")
         self.othello.tab.afficher_plateau()
         print("####################################")
-        
+
         for i in range(8):
             for j in range(8):
                 yc = self.convertirIndextoPix(i)
@@ -100,9 +100,8 @@ class Othello_IHM:
                 val = self.othello.tab.get_value(i, j)
                 if val == 1:
                     self.dessiner_jeton(xc, yc, 'black')
-                else:
-                    if val == 2:
-                       self.dessiner_jeton(xc, yc, 'white')
+                elif val == 2:
+                    self.dessiner_jeton(xc, yc, 'white')
 
     def reset_jeu(self):
         self.cnv.delete(ALL)
@@ -141,18 +140,18 @@ class Othello_IHM:
             # inscrit valeur du pion sur le plateau
             self.othello.tab.set_value(ic, jc, valColor)
             self.dessiner_jeton(xc, yc, color)
-             
+
             # recherche des pions a retourner et retournement
             self.othello.tab.rechercher_pion(ic, jc, valColor)
 
             # Recupere les compteurs de noirs et de blancs
             self.cmpt_noir = self.othello.tab.recuperer_score(1)
             self.cmpt_blnc = self.othello.tab.recuperer_score(2)
-             
+
             # Met a jour les label (affichage graphique des compteurs)
             self.score_noir.set(" : " + str(self.cmpt_noir))
             self.score_blnc.set(" : " + str(self.cmpt_blnc))
 
             # Mise a jour graphique du jeu apres retournement des pions
             self.dessiner_jeu()
-            
+

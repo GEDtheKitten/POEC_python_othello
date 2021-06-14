@@ -1,4 +1,6 @@
 from Othello_IHM import *
+import os
+import pickle
 
 class Plateau:
 
@@ -95,6 +97,14 @@ class Plateau:
                     score += 1
         return score
 
+    # enregistre l'objet plateau dans un fichier binaire
+    def sauver_plateau(self):
+        os.makedirs('sauvegarde_partie', exist_ok=True)
+        with open('sauvegarde_partie/plateau.pkl', 'wb') as output:
+            pickle.dump(self, output, pickle.HIGHEST_PROTOCOL)
+
+
+
 # Classe principale du jeu
 class Othello:
     def __init__(self):
@@ -120,6 +130,7 @@ class Othello:
         self.ihm.reset_jeu()
 
     def sauver(self):
+        self.tab.sauver_plateau()
         print("Sauvegarde de la partie.")
         # TODO -------------------------------------------------------------------
         # copier le tableau : def sauvegarderPlateau (plateau)
@@ -127,9 +138,8 @@ class Othello:
 
     def charger(self):
         print("Chargement de la partie.")
-        # TODO -------------------------------------------------------------------
-        # lecture tableau depuis fichier
-        # self.tab = tableau qui vient d'être lu ---------------------------------
+        with open('sauvegarde_partie/plateau.pkl', 'rb') as input:
+            self.tab = pickle.load(input)
         self.ihm.dessiner_jeu()  # version actuelle
 
     def quitter(self):

@@ -1,4 +1,6 @@
 from tkinter import *
+from tkinter import filedialog
+from typing import Type
 
 
 class Othello_IHM:
@@ -86,7 +88,7 @@ class Othello_IHM:
         self.cnv.create_oval(x - r, y - r, x + r, y + r,
                              outline='black', fill=color)
 
- # Recupere les compteurs de noirs et de blancs  
+    # Recupere les compteurs de noirs et de blancs
     def dessiner_score(self):
         self.cmpt_noir = self.othello.tab.recuperer_score(1)
         self.cmpt_blnc = self.othello.tab.recuperer_score(2)
@@ -145,7 +147,8 @@ class Othello_IHM:
         else:
             color = 'white'
             valColor = 2
-            self.radio_value.set(1)  # ...pour le tour suivant (noir, blanc, noir...)
+            # ...pour le tour suivant (noir, blanc, noir...)
+            self.radio_value.set(1)
 
         if self.othello.tab.verifier_si_saisie_valide(ic, jc):
             # inscrit valeur du pion sur le plateau
@@ -153,8 +156,17 @@ class Othello_IHM:
             self.dessiner_jeton(xc, yc, color)
 
             # recherche des pions a retourner et retournement
-            self.othello.tab.rechercher_pion(ic, jc, valColor)          
+            self.othello.tab.rechercher_pion(ic, jc, valColor)
 
             # Mise a jour graphique du jeu apres retournement des pions
             self.dessiner_jeu()
+
+    def select_ouvrir_fichier(self):
+        return filedialog.askopenfilename(title="selectionner un fichier", filetypes=[("fichiers othello", "pkl")])
+    
+    def select_enregistrer_fichier(self):
+        return filedialog.asksaveasfilename(title="donner un fichier", filetypes=[("fichiers othello", "pkl")]) + ".pkl"
+    
+    
+
 

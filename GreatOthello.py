@@ -1,5 +1,5 @@
 from Othello_IHM import *
-import os
+# import os
 import pickle
 
 
@@ -23,10 +23,16 @@ class Plateau:
 
     # constructeur du plateau
     def __init__(self, taille=8):
+        # initialisation de la structure du plateau 
         self.plateau = [[0 for i in range(taille)] for i in range(taille)]
+        # mise en place des pions de debut de partie 
         self.plateau[3][3] = self.plateau[4][4] = 1
         self.plateau[3][4] = self.plateau[4][3] = 2
-        self.tabSens = [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1]]
+        # liste des directions possible - vertical / horizontal / diagonal - autour d une case
+        #            [-1, -1]    [-1, 0]    [-1, 1]   
+        #            [ 0, -1]     case      [ 0, 1]                         
+        #            [ 1, -1]    [ 1, 0]    [ 1, 1]                 
+        self.liste_des_directions = [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1]]
 
     # affiche les valeurs du plateau sans la syntax des listes [ , , ] - debuggage 
     def afficher_plateau(self):
@@ -49,12 +55,14 @@ class Plateau:
     def est_sur_le_plateau(self, x, y):
         return 0 <= x <= self.taille_plateau()-1 and 0 <= y <= self.taille_plateau()-1
 
-    #
+    # recherche les pions a retouner et les retournes 
     def rechercher_pion(self, x_depart, y_depart, color):
-        for dir_x, dir_y in self.tabSens:
+        # pour chaque direction de la grille 
+        for dir_x, dir_y in self.liste_des_directions:
             x_arrive = x_depart
             y_arrive = y_depart
             pions_a_retourner = []
+            # tand que l on ne sort pas du plateau et que l on rencontre des poins 
             while self.est_sur_le_plateau(x_arrive, y_arrive) and self.plateau[x_arrive][y_arrive] != 0:
                 pions_a_retourner.append([x_arrive, y_arrive])
                 if self.plateau[x_arrive][y_arrive] == color:
@@ -76,7 +84,7 @@ class Plateau:
             and 0 <= (yc + dir_y) <= self.taille_plateau()-1
             and self.plateau[xc + dir_x][yc + dir_y] != 0
             and self.plateau[xc][yc] == 0
-            for dir_x, dir_y in self.tabSens
+            for dir_x, dir_y in self.liste_des_directions
         )
 
     # compter le score d'une couleur
@@ -89,14 +97,14 @@ class Plateau:
                     score += 1
         return score
 
-    # enregistre l'objet plateau dans un fichier binaire
-    def sauver_plateau(self):
-        #os.makedirs('sauvegarde_partie', exist_ok=True)
-        fich = self.ihm.selectionner_dossier()
-        print('TEST :' + fich)
-        with open(fich, 'wb') as output:
-        #with open('sauvegarde_partie/plateau.pkl', 'wb') as output:
-            pickle.dump(self, output, pickle.HIGHEST_PROTOCOL)
+    # # enregistre l'objet plateau dans un fichier binaire
+    # def sauver_plateau(self):
+    #     #os.makedirs('sauvegarde_partie', exist_ok=True)
+    #     fich = self.ihm.selectionner_dossier()
+    #     print('TEST :' + fich)
+    #     with open(fich, 'wb') as output:
+    #     #with open('sauvegarde_partie/plateau.pkl', 'wb') as output:
+    #         pickle.dump(self, output, pickle.HIGHEST_PROTOCOL)
 
 
 # Classe principale du jeu
@@ -144,7 +152,7 @@ class Othello:
             self.tab = pickle.load(input)
         self.ihm.dessiner_jeu() 
 
-    # quite la partie en sauvegardant la partie en cour
+    # quitte la partie en sauvegardant la partie en cour
     def quitter(self):
         self.sauver()
         self.ihm.fen.destroy()

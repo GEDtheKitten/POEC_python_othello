@@ -86,6 +86,15 @@ class Othello_IHM:
         self.cnv.create_oval(x - r, y - r, x + r, y + r,
                              outline='black', fill=color)
 
+ # Recupere les compteurs de noirs et de blancs  
+    def dessiner_score(self):
+        self.cmpt_noir = self.othello.tab.recuperer_score(1)
+        self.cmpt_blnc = self.othello.tab.recuperer_score(2)
+
+        # Met a jour les label (affichage graphique des compteurs)
+        self.score_noir.set(" : " + str(self.cmpt_noir))
+        self.score_blnc.set(" : " + str(self.cmpt_blnc))
+
     def dessiner_jeu(self):
         self.cnv.delete(ALL)
         self.dessiner_grille()
@@ -102,6 +111,8 @@ class Othello_IHM:
                     self.dessiner_jeton(xc, yc, 'black')
                 elif val == 2:
                     self.dessiner_jeton(xc, yc, 'white')
+
+        self.dessiner_score()
 
     def reset_jeu(self):
         self.cnv.delete(ALL)
@@ -142,15 +153,7 @@ class Othello_IHM:
             self.dessiner_jeton(xc, yc, color)
 
             # recherche des pions a retourner et retournement
-            self.othello.tab.rechercher_pion(ic, jc, valColor)
-
-            # Recupere les compteurs de noirs et de blancs
-            self.cmpt_noir = self.othello.tab.recuperer_score(1)
-            self.cmpt_blnc = self.othello.tab.recuperer_score(2)
-
-            # Met a jour les label (affichage graphique des compteurs)
-            self.score_noir.set(" : " + str(self.cmpt_noir))
-            self.score_blnc.set(" : " + str(self.cmpt_blnc))
+            self.othello.tab.rechercher_pion(ic, jc, valColor)          
 
             # Mise a jour graphique du jeu apres retournement des pions
             self.dessiner_jeu()

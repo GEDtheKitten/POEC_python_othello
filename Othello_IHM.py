@@ -120,14 +120,14 @@ class Othello_IHM:
                     self.dessiner_jeton(xc, yc, 'white')
 
         self.dessiner_score()
-
+    
     def reset_jeu(self):
         self.cnv.delete(ALL)
         self.dessiner_grille()
         self.dessiner_jeu()
         self.score_noir.set(" : " + str(2))
         self.score_blnc.set(" : " + str(2))
-
+    
     def clic(self, event):
         # c'est ici que l'on ajoute des jetons en cliquant,
         # que tab(i,j) se met à jour et que les algos de validité et de retournement
@@ -144,21 +144,19 @@ class Othello_IHM:
 
         ic = self.convertir_pix_to_index(yc)
         jc = self.convertir_pix_to_index(xc)
-
-        if self.radio_value.get() == 1:
-            color = 'black'
-            val_color = 1
-            self.radio_value.set(2)  # on alterne les couleurs à chaque clic...
-        else:
-            color = 'white'
-            val_color = 2
-            # ...pour le tour suivant (noir, blanc, noir...)
-            self.radio_value.set(1)
-
-        if self.othello.tab.verifier_si_saisie_valide(ic, jc, valColor):
+        
+        val_color = self.radio_value.get()
+        color = ["black", "white"]
+        
+        # Test sur val_color
+        if (val_color != 1) and (val_color != 2):
+            print("clic : erreur sur val_color")
+        
+        if self.othello.tab.verifier_si_saisie_valide(ic, jc, val_color):
             # inscrit valeur du pion sur le plateau
             self.othello.tab.set_value(ic, jc, val_color)
-            self.dessiner_jeton(xc, yc, color)
+            # indice de tableau : 0,1 alors que val_color : 1,2 d'où le -1
+            self.dessiner_jeton(xc, yc, color[val_color - 1])
 
             # recherche des pions a retourner et retournement
             self.othello.tab.rechercher_pion(ic, jc, val_color)
@@ -166,6 +164,18 @@ class Othello_IHM:
             # Mise a jour graphique du jeu apres retournement des pions
             self.dessiner_jeu()
 
+            # Passage au joueur suivant
+            self.joueur_suivant()
+    
+    # Passage au joueur suivant (en alternant radio_value) SI pion valide
+    def joueur_suivant(self):
+        if self.radio_value.get() == 1:
+            self.radio_value.set(2)
+        elif self.radio_value.get() == 2:
+            self.radio_value.set(1)
+        else:
+            print("joueur_suivant : erreur sur radio_value")
+    
     def select_ouvrir_fichier(self):
         return filedialog.askopenfilename(title="selectionner un fichier", filetypes=[("fichiers othello", ".pkl"), ("tout fichier", "*.*")])
     

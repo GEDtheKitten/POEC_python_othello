@@ -1,4 +1,3 @@
-# POEC_python_othello
 
 Il y avait un bug :
 en cliquant sur une zone non permise, on passait du joueur noir au blanc

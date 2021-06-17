@@ -65,6 +65,8 @@ class Plateau:
             # tand que l on ne sort pas du plateau et que l on rencontre des poins 
             while self.est_sur_le_plateau(x_arrive, y_arrive) and self.plateau[x_arrive][y_arrive] != 0:
                 pions_a_retourner.append([x_arrive, y_arrive])
+                # si l on recontre un pion de la meme couleur pendant le parcour 
+                # on retourne les pions recontres sur le parcour 
                 if self.plateau[x_arrive][y_arrive] == color:
                     for x_pion, y_pion in pions_a_retourner:
                         self.plateau[x_pion][y_pion] = color
@@ -72,7 +74,7 @@ class Plateau:
                 y_arrive += dir_y
 
     # vérifie la présence d'un autre pion à côté du pion placé
-    def verifier_si_saisie_valide(self, xc, yc):
+    def verifier_si_saisie_valide(self, xc, yc, color):
         # return True or False
         # x et y compris entre 0 et 7 inclus (nb : contrainte via interface)
         # vérifie la présence d au moins un pion autour des coordonnées saisies
@@ -83,6 +85,7 @@ class Plateau:
             0 <= (xc + dir_x) <= self.taille_plateau()-1
             and 0 <= (yc + dir_y) <= self.taille_plateau()-1
             and self.plateau[xc + dir_x][yc + dir_y] != 0
+            and self.plateau[xc + dir_x][yc + dir_y] != color
             and self.plateau[xc][yc] == 0
             for dir_x, dir_y in self.liste_des_directions
         )

@@ -70,10 +70,10 @@ class Othello_IHM:
         btn_quit = Button(frb, text='Quitter', command=oth.quitter)
         btn_quit.pack(side=LEFT, padx=5, pady=5)
 
-    def convertirPixtoIndex(self, x):
+    def convertir_pix_to_index(self, x):
         return (x-25)//50
 
-    def convertirIndextoPix(self, i):
+    def convertir_index_to_pix(self, i):
         return (i*50) + 25
 
     def dessiner_grille(self):
@@ -106,8 +106,8 @@ class Othello_IHM:
 
         for i in range(8):
             for j in range(8):
-                yc = self.convertirIndextoPix(i)
-                xc = self.convertirIndextoPix(j)
+                yc = self.convertir_index_to_pix(i)
+                xc = self.convertir_index_to_pix(j)
                 val = self.othello.tab.get_value(i, j)
                 if val == 1:
                     self.dessiner_jeton(xc, yc, 'black')
@@ -137,8 +137,8 @@ class Othello_IHM:
         xc = int(x / 50) * 50 + 25
         yc = int(y / 50) * 50 + 25
 
-        ic = self.convertirPixtoIndex(yc)
-        jc = self.convertirPixtoIndex(xc)
+        ic = self.convertir_pix_to_index(yc)
+        jc = self.convertir_pix_to_index(xc)
 
         if self.radio_value.get() == 1:
             color = 'black'
@@ -150,7 +150,7 @@ class Othello_IHM:
             # ...pour le tour suivant (noir, blanc, noir...)
             self.radio_value.set(1)
 
-        if self.othello.tab.verifier_si_saisie_valide(ic, jc):
+        if self.othello.tab.verifier_si_saisie_valide(ic, jc, valColor):
             # inscrit valeur du pion sur le plateau
             self.othello.tab.set_value(ic, jc, valColor)
             self.dessiner_jeton(xc, yc, color)

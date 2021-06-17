@@ -154,7 +154,7 @@ class Othello:
 
     # quitte la partie en sauvegardant la partie en cour
     def quitter(self):
-        self.sauver()
+        #self.sauver()
         self.ihm.fen.destroy()
 
 

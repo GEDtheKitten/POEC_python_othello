@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 from typing import Type
 
 
@@ -97,6 +97,11 @@ class Othello_IHM:
         self.score_noir.set(" : " + str(self.cmpt_noir))
         self.score_blnc.set(" : " + str(self.cmpt_blnc))
 
+        # Annonce la fin de partie apres 64 pions posés
+        somme_score = self.cmpt_noir + self.cmpt_blnc
+        #print("somme", somme_score)
+        if somme_score == 64: self.fin_de_partie()
+
     def dessiner_jeu(self):
         self.cnv.delete(ALL)
         self.dessiner_grille()
@@ -142,31 +147,39 @@ class Othello_IHM:
 
         if self.radio_value.get() == 1:
             color = 'black'
-            valColor = 1
+            val_color = 1
             self.radio_value.set(2)  # on alterne les couleurs à chaque clic...
         else:
             color = 'white'
-            valColor = 2
+            val_color = 2
             # ...pour le tour suivant (noir, blanc, noir...)
             self.radio_value.set(1)
 
         if self.othello.tab.verifier_si_saisie_valide(ic, jc):
             # inscrit valeur du pion sur le plateau
-            self.othello.tab.set_value(ic, jc, valColor)
+            self.othello.tab.set_value(ic, jc, val_color)
             self.dessiner_jeton(xc, yc, color)
 
             # recherche des pions a retourner et retournement
-            self.othello.tab.rechercher_pion(ic, jc, valColor)
+            self.othello.tab.rechercher_pion(ic, jc, val_color)
 
             # Mise a jour graphique du jeu apres retournement des pions
             self.dessiner_jeu()
 
     def select_ouvrir_fichier(self):
-        return filedialog.askopenfilename(title="selectionner un fichier", filetypes=[("fichiers othello", "pkl")])
+        return filedialog.askopenfilename(title="selectionner un fichier", filetypes=[("fichiers othello", ".pkl"), ("tout fichier", "*.*")])
     
     def select_enregistrer_fichier(self):
-        return filedialog.asksaveasfilename(title="donner un fichier", filetypes=[("fichiers othello", "pkl")]) + ".pkl"
-    
+        return filedialog.asksaveasfilename(title="donner un fichier", filetypes=[("fichiers othello", ".pkl"), ("tout fichier", "*.*")], defaultextension = ".pkl")
+
+    def fin_de_partie(self):
+        if self.cmpt_noir > 32: mess = "Les noirs ont gagné!"
+        if self.cmpt_noir < 32: mess = "Les blancs ont gagné!"
+        if self.cmpt_noir == 32: mess = "Egalité!"
+         
+        rep = messagebox.askyesno(message = mess + "\n" + "Autre partie ?")
+        if rep == True:
+           self.othello.nouveau()
     
 
 

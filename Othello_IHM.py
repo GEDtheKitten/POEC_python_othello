@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import filedialog, messagebox
-from typing import Type
+# from typing import Type
 
 
 class Othello_IHM:
@@ -145,23 +145,25 @@ class Othello_IHM:
         ic = self.convertir_pix_to_index(yc)
         jc = self.convertir_pix_to_index(xc)
 
-        if self.radio_value.get() == 1:
-            color = 'black'
-            val_color = 1
-            self.radio_value.set(2)  # on alterne les couleurs à chaque clic...
-        else:
-            color = 'white'
-            val_color = 2
-            # ...pour le tour suivant (noir, blanc, noir...)
-            self.radio_value.set(1)
+        if self.othello.tab.verifier_si_saisie_valide(ic, jc, self.othello.get_joueur()):
+            if self.radio_value.get() == 1:
+                # color = 'black'
+                self.othello.set_joueur('black')
+                # val_color = 1
+                self.radio_value.set(2)  # on alterne les couleurs à chaque clic...
+            else:
+                # color = 'white'
+                self.othello.set_joueur('white')
+                # val_color = 2
+                # ...pour le tour suivant (noir, blanc, noir...)
+                self.radio_value.set(1)
 
-        if self.othello.tab.verifier_si_saisie_valide(ic, jc, valColor):
             # inscrit valeur du pion sur le plateau
-            self.othello.tab.set_value(ic, jc, val_color)
-            self.dessiner_jeton(xc, yc, color)
+            self.othello.tab.set_value(ic, jc, self.othello.get_joueur())
+            self.dessiner_jeton(xc, yc, self.othello.get_joueur())
 
             # recherche des pions a retourner et retournement
-            self.othello.tab.rechercher_pion(ic, jc, val_color)
+            self.othello.tab.rechercher_pion(ic, jc, self.othello.get_joueur())
 
             # Mise a jour graphique du jeu apres retournement des pions
             self.dessiner_jeu()

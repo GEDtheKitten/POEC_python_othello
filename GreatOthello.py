@@ -54,24 +54,24 @@ class Plateau:
     def est_sur_le_plateau(self, x, y):
         return 0 <= x <= self.taille_plateau()-1 and 0 <= y <= self.taille_plateau()-1
 
-    # vérifie si le coup est valide 
+    # vérifie si le coup est valide
     def verifier_si_saisie_valide(self, x_depart, y_depart, color):
-        # pour chaque direction de la grille
-        for dir_x, dir_y in self.liste_des_directions:
-            x_arrive = x_depart + dir_x
-            y_arrive = y_depart + dir_y
-            # si le poin adjacent est de la couleur adverse on peut jouer
-            if self.est_sur_le_plateau(x_arrive, y_arrive) and self.plateau[x_arrive][y_arrive] != color:
+        # si la case n est pas deja occupe
+        if self.plateau[x_depart][y_depart] == 0:
+            # pour chaque direction de la grille
+            for dir_x, dir_y in self.liste_des_directions:
                 x_arrive = x_depart + dir_x
                 y_arrive = y_depart + dir_y
-                # tand que l on ne sort pas du plateau et que l on rencontre des poins
-                while self.est_sur_le_plateau(x_arrive, y_arrive) and self.plateau[x_arrive][y_arrive] != 0:
-                    # si l on trouve un coup a jouer (un pion de sa couleur) => True
-                    if self.plateau[x_arrive][y_arrive] == color:
-                        return True
-                    x_arrive += dir_x
-                    y_arrive += dir_y
-        # on n a pas trouve de coup a jouer 
+                # si le poin adjacent est de la couleur adverse on peut jouer
+                if self.est_sur_le_plateau(x_arrive, y_arrive) and self.plateau[x_arrive][y_arrive] != color:
+                    # tand que l on ne sort pas du plateau et que l on rencontre des poins
+                    while self.est_sur_le_plateau(x_arrive, y_arrive) and self.plateau[x_arrive][y_arrive] != 0:
+                        # si l on trouve un coup a jouer (un pion de sa couleur) => True
+                        if self.plateau[x_arrive][y_arrive] == color:
+                            return True
+                        x_arrive += dir_x
+                        y_arrive += dir_y
+            # on n a pas trouve de coup a jouer
         return False
 
     # recherche les pions a retouner et les retournes

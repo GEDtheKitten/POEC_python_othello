@@ -10,3 +10,5 @@ J'ai noté qu'il y a encore des possibilités de placer un pion là où il ne de
 
 Pascal
 
+
+Ces comportements anormaux ont été corrigé :)

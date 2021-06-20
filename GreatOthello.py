@@ -31,8 +31,7 @@ class Plateau:
         #            [-1, -1]    [-1, 0]    [-1, 1]
         #            [ 0, -1]     case      [ 0, 1]
         #            [ 1, -1]    [ 1, 0]    [ 1, 1]
-        self.liste_des_directions = [[0, 1], [1, 1], [1, 0], [
-            1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1]]
+        self.liste_des_directions = [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1]]
 
     # affiche les valeurs du plateau sans la syntax des listes [ , , ] - debuggage
     def afficher_plateau(self):
@@ -55,8 +54,28 @@ class Plateau:
     def est_sur_le_plateau(self, x, y):
         return 0 <= x <= self.taille_plateau()-1 and 0 <= y <= self.taille_plateau()-1
 
+    # vérifie si le coup est valide 
+    def verifier_si_saisie_valide(self, x_depart, y_depart, color):
+        # pour chaque direction de la grille
+        for dir_x, dir_y in self.liste_des_directions:
+            x_arrive = x_depart + dir_x
+            y_arrive = y_depart + dir_y
+            # si le poin adjacent est de la couleur adverse on peut jouer
+            if self.est_sur_le_plateau(x_arrive, y_arrive) and self.plateau[x_arrive][y_arrive] != color:
+                x_arrive = x_depart + dir_x
+                y_arrive = y_depart + dir_y
+                # tand que l on ne sort pas du plateau et que l on rencontre des poins
+                while self.est_sur_le_plateau(x_arrive, y_arrive) and self.plateau[x_arrive][y_arrive] != 0:
+                    # si l on trouve un coup a jouer (un pion de sa couleur) => True
+                    if self.plateau[x_arrive][y_arrive] == color:
+                        return True
+                    x_arrive += dir_x
+                    y_arrive += dir_y
+        # on n a pas trouve de coup a jouer 
+        return False
+
     # recherche les pions a retouner et les retournes
-    def rechercher_pion(self, x_depart, y_depart, color):
+    def rechercher_et_retourner_pion(self, x_depart, y_depart, color):
         # pour chaque direction de la grille
         for dir_x, dir_y in self.liste_des_directions:
             x_arrive = x_depart + dir_x
@@ -65,7 +84,7 @@ class Plateau:
             # tand que l on ne sort pas du plateau et que l on rencontre des poins
             while self.est_sur_le_plateau(x_arrive, y_arrive) and self.plateau[x_arrive][y_arrive] != 0:
                 # si l on recontre un pion de la meme couleur pendant le parcour
-                # on retourne les pions recontres sur le parcour
+                # on retourne les pions adverses recontres sur le parcour
                 if self.plateau[x_arrive][y_arrive] == color:
                     for x_pion, y_pion in pions_a_retourner:
                         self.plateau[x_pion][y_pion] = color
@@ -73,25 +92,6 @@ class Plateau:
                 pions_a_retourner.append([x_arrive, y_arrive])
                 x_arrive += dir_x
                 y_arrive += dir_y
-
-    # vérifie si le coup est valide 
-    def verifier_si_saisie_valide(self, x_depart, y_depart, color):
-        # pour chaque direction de la grille
-        for dir_x, dir_y in self.liste_des_directions:
-            x_arrive = x_depart + dir_x
-            y_arrive = y_depart + dir_y
-            # si le poin adjacent est de la couleur adverse on peut jouer
-            if self.plateau[x_arrive][y_arrive] != color:
-                x_arrive = x_depart + dir_x
-                y_arrive = y_depart + dir_y
-                # tand que l on ne sort pas du plateau et que l on rencontre des poins
-                while self.est_sur_le_plateau(x_arrive, y_arrive) and self.plateau[x_arrive][y_arrive] != 0:
-                    # si l on trouve un coup a jouer => True
-                    if self.plateau[x_arrive][y_arrive] == color:
-                        return True
-                    x_arrive += dir_x
-                    y_arrive += dir_y
-        return False
 
     # compter le score d'une couleur
     def recuperer_score(self, color):

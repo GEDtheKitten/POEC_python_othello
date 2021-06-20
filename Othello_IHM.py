@@ -1,6 +1,5 @@
 from tkinter import *
 from tkinter import filedialog, messagebox
-from typing import Type
 
 
 class Othello_IHM:
@@ -46,11 +45,9 @@ class Othello_IHM:
         lab_blnc = Label(frr, textvariable=self.score_blnc)
 
         # Création du controle RadioButton avec deux possibilités
-        rdio_noir = Radiobutton(frl, text='NOIR',
-                                variable=self.radio_value, value=1)
+        rdio_noir = Radiobutton(frl, text='NOIR', variable=self.radio_value, value=1)
 
-        rdio_blnc = Radiobutton(frr, text='BLANC',
-                                variable=self.radio_value, value=2)
+        rdio_blnc = Radiobutton(frr, text='BLANC', variable=self.radio_value, value=2)
 
         # Agencement NOIR
         rdio_noir.pack(side=LEFT)
@@ -85,8 +82,7 @@ class Othello_IHM:
 
     def dessiner_jeton(self, x, y, color):
         r = 20
-        self.cnv.create_oval(x - r, y - r, x + r, y + r,
-                             outline='black', fill=color)
+        self.cnv.create_oval(x - r, y - r, x + r, y + r, outline='black', fill=color)
 
     # Recupere les compteurs de noirs et de blancs
     def dessiner_score(self):
@@ -117,17 +113,6 @@ class Othello_IHM:
                 elif val == 2:
                     self.dessiner_jeton(xc, yc, 'white')
         self.dessiner_score()
-
-    # def verifier_si_saisie_valide(self, xc, yc, color):
-    #     print('test')
-    #     tab_test = self.othello.tab
-    #     tab_test.rechercher_pion(xc, yc, color)
-    #     tab_test.afficher_plateau()
-    #     print(self.othello.tab == tab_test)
-    #     if self.othello.tab == tab_test:
-    #         print('ca marche ^^')
-    #     self.othello.tab.afficher_plateau()
-    #     print('fin test ')
     
     def reset_jeu(self):
         self.cnv.delete(ALL)
@@ -135,6 +120,7 @@ class Othello_IHM:
         self.dessiner_jeu()
         self.score_noir.set(" : " + str(2))
         self.score_blnc.set(" : " + str(2))
+        self.radio_value.set(1)
     
     def clic(self, event):
         # c'est ici que l'on ajoute des jetons en cliquant,
@@ -169,7 +155,7 @@ class Othello_IHM:
             self.dessiner_jeton(xc, yc, color[val_color - 1])
 
             # recherche des pions a retourner et retournement
-            self.othello.tab.rechercher_pion(ic, jc, val_color)
+            self.othello.tab.rechercher_et_retourner_pion(ic, jc, val_color)
 
             # Mise a jour graphique du jeu apres retournement des pions
             self.dessiner_jeu()
@@ -201,5 +187,3 @@ class Othello_IHM:
         if rep == True:
            self.othello.nouveau()
     
-
-

@@ -99,7 +99,6 @@ class Othello_IHM:
 
         # Annonce la fin de partie apres 64 pions posés
         somme_score = self.cmpt_noir + self.cmpt_blnc
-        #print("somme", somme_score)
         if somme_score == 64: self.fin_de_partie()
 
     def dessiner_jeu(self):
@@ -108,7 +107,6 @@ class Othello_IHM:
         print("####################################")
         self.othello.tab.afficher_plateau()
         print("####################################")
-
         for i in range(8):
             for j in range(8):
                 yc = self.convertir_index_to_pix(i)
@@ -118,8 +116,18 @@ class Othello_IHM:
                     self.dessiner_jeton(xc, yc, 'black')
                 elif val == 2:
                     self.dessiner_jeton(xc, yc, 'white')
-
         self.dessiner_score()
+
+    # def verifier_si_saisie_valide(self, xc, yc, color):
+    #     print('test')
+    #     tab_test = self.othello.tab
+    #     tab_test.rechercher_pion(xc, yc, color)
+    #     tab_test.afficher_plateau()
+    #     print(self.othello.tab == tab_test)
+    #     if self.othello.tab == tab_test:
+    #         print('ca marche ^^')
+    #     self.othello.tab.afficher_plateau()
+    #     print('fin test ')
     
     def reset_jeu(self):
         self.cnv.delete(ALL)
@@ -144,17 +152,19 @@ class Othello_IHM:
 
         ic = self.convertir_pix_to_index(yc)
         jc = self.convertir_pix_to_index(xc)
-        
+
         val_color = self.radio_value.get()
         color = ["black", "white"]
         
         # Test sur val_color
-        if (val_color != 1) and (val_color != 2):
+        if val_color not in [1, 2]:
             print("clic : erreur sur val_color")
-        
+
         if self.othello.tab.verifier_si_saisie_valide(ic, jc, val_color):
             # inscrit valeur du pion sur le plateau
             self.othello.tab.set_value(ic, jc, val_color)
+            color = ["black", "white"]
+
             # indice de tableau : 0,1 alors que val_color : 1,2 d'où le -1
             self.dessiner_jeton(xc, yc, color[val_color - 1])
 

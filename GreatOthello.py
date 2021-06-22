@@ -1,5 +1,6 @@
 from Othello_IHM import *
 import pickle
+# test git 
 
 
 class Plateau:
